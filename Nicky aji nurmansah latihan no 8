@@ -1,0 +1,75 @@
+void selectionSort<T extends Comparable<T>>(List<T> arr) {
+  T temp;
+  for (int i = arr.length - 1; i >= 0; i--) {
+    int max = i;
+    for (int j = i - 1; j >= 0; j--) {
+    if (arr[j].compareTo(arr[max]) > 0) max = j;
+    }
+    temp = arr[i];
+    arr[i] = arr[max];
+    arr[max] = temp;
+  }
+}
+
+
+void bubbleSortDescendingWithFlag<T extends Comparable<T>>(List<T> arr) {
+  int n = arr.length;
+  bool swapped; // Flag untuk memeriksa apakah ada pertukaran
+  for (int i = 0; i < n - 1; i++) {
+  swapped = false; // Reset flag di awal setiap iterasi
+  for (int j = 0; j < n - i - 1; j++) {
+    // Bandingkan elemen saat ini dengan elemen berikutnya
+      if (arr[j].compareTo(arr[j + 1]) < 0) {
+        // Tukar jika elemen saat ini lebih kecil
+        T temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+        swapped = true; // Tandai bahwa ada pertukaran
+      }
+    }
+    // Jika tidak ada pertukaran, array sudah terurut
+    if (!swapped) {
+      break;
+    }
+  }
+}
+
+
+void display<T>(List<T> data) {
+  for (T objek in data) {
+    print('$objek ');
+  }
+  print('');
+}
+
+
+void main() {
+  List<num> data = List<num>.generate(10, (index) => (index + 1) * 2);
+  data.shuffle();
+  print('Data Sebelum Pengurutan:');
+  display(data);
+
+
+  // Pengurutan dengan Selection Sort
+  DateTime start = DateTime.now();
+  selectionSort(data);
+  Duration elapsedTime = DateTime.now().difference(start);
+  print('Data Setelah Pengurutan (Selection Sort):');
+  display(data);
+  print('Waktu: ${elapsedTime.inMilliseconds} ms');
+
+
+  // Mengacak data lagi untuk pengurutan Bubble Sort
+  data.shuffle();
+  print('Data Sebelum Pengurutan (Bubble Sort):');
+  display(data);
+
+
+  // Pengurutan dengan Bubble Sort Descending menggunakan Flag
+  start = DateTime.now();
+  bubbleSortDescendingWithFlag(data);
+  elapsedTime = DateTime.now().difference(start);
+  print('Data Setelah Pengurutan (Bubble Sort Descending):');
+  display(data);
+  print('Waktu: ${elapsedTime.inMilliseconds} ms');
+}
