@@ -1,0 +1,70 @@
+void main() {
+  List<num> data = List.generate(10, (index) => (index + 1).toDouble());
+  print("Data sebelum diurutkan:");
+  printData(data);
+
+
+  // Mengurutkan secara ascending
+  DateTime startTimeAsc = DateTime.now();
+  quickSort(data, 0, data.length - 1, ascending: true);
+  Duration elapsedTimeAsc = DateTime.now().difference(startTimeAsc);
+  print("Data setelah diurutkan (Ascending):");
+  printData(data);
+  print('Waktu (Ascending): ${elapsedTimeAsc.inMilliseconds} ms');
+
+
+  // Menghasilkan data acak untuk pengurutan descending
+  data = List.generate(10, (index) => (index + 1).toDouble());
+  print("Data sebelum diurutkan:");
+  printData(data);
+
+
+  // Mengurutkan secara descending
+  DateTime startTimeDesc = DateTime.now();
+  quickSort(data, 0, data.length - 1, ascending: false);
+  Duration elapsedTimeDesc = DateTime.now().difference(startTimeDesc);
+  print("Data setelah diurutkan (Descending):");
+  printData(data);
+  print('Waktu (Descending): ${elapsedTimeDesc.inMilliseconds} ms');
+}
+
+
+void quickSort<T extends Comparable<T>>(List<T> arr, int p, int r, {required bool ascending}) {
+  int q;
+  if (p < r) {
+    q = partition(arr, p, r, ascending: ascending);
+    quickSort(arr, p, q, ascending: ascending);
+    quickSort(arr, q + 1, r, ascending: ascending);
+  }
+}
+
+
+int partition<T extends Comparable<T>>(List<T> arr, int p, int r, {required bool ascending}) {
+  int i, j;
+  T pivot, temp;
+  pivot = arr[p];
+  i = p;
+  j = r;
+  while (i <= j) {
+    while (ascending ? pivot.compareTo(arr[j]) < 0 : pivot.compareTo(arr[j]) > 0) j--;
+    while (ascending ? pivot.compareTo(arr[i]) > 0 : pivot.compareTo(arr[i]) < 0) i++;
+    if (i < j) {
+      temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+      j--;
+      i++;
+    } else {
+      return j;
+    }
+  }
+  return j;
+}
+
+
+void printData<T>(List<T> data) {
+  for (T objek in data) {
+    print('$objek ');
+  }
+  print('');
+}
